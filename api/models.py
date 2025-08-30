@@ -15,6 +15,7 @@ class Note(Base):
     """
     Note class for database representation
     """
+
     __tablename__ = "notes"
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
@@ -28,6 +29,7 @@ class NoteType(BaseModel):
     """
     Note class for typing
     """
+
     title: str
     content: str
     creator: Optional[str] = None
