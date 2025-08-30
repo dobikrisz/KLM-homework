@@ -1,3 +1,8 @@
+"""
+Module to set up SQLAlchemy
+"""
+
+
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -11,7 +16,11 @@ Base = declarative_base()
 
 Base.metadata.create_all(bind=engine)
 
+
 def get_db():
+    """
+    create local session for postgres database
+    """
     db = SessionLocal()
     try:
         yield db
