@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:17.6-bookworm
+    environment:
+      POSTGRES_DB: 'db'
+      POSTGRES_USER: 'myuser'
+      POSTGRES_PASSWORD: 'mypassword'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d db"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+    ports:
+      - "5432:5432"
+    volumes:
+      - database_default:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - backend
+
+  api:
+    build: ./api
+    container_name: api
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://myuser:mypassword@db/db
+    ports:
+      - "5000:5000"
+    networks:
+      - backend
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    depends_on:
+      - api
+    environment:
+      API_URL: http://api:5000
+    ports:
+      - "8501:8501"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+    name: backend
+
+volumes:
+  database_default:
