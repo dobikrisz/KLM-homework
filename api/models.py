@@ -10,6 +10,7 @@ from pydantic import BaseModel
 # pylint: disable=import-error
 from database import Base
 
+
 # pylint: disable=too-few-public-methods
 class Note(Base):
     """

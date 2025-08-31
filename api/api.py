@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 # pylint: disable=import-error
 from database import get_db
+
 # pylint: disable=import-error
 from models import Note, NoteType
 
