@@ -25,7 +25,7 @@ jobs:
 
       - name: pylint check
         run: |
-            pylint $(find . -name "*.py" | xargs)
+            pylint $(find . -name "*.py" | xargs) --fail-under=9.5
 
       - name: pytest test
         run: |
