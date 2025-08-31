@@ -4,3 +4,5 @@ uvicorn
 psycopg2-binary
 sqlalchemy
 streamlit
+httpx
+pytest

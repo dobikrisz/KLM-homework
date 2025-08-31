@@ -2,23 +2,34 @@
 Main module for API hosting
 """
 
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 # pylint: disable=import-error
-from database import get_db
+from api.database import get_db, engine
 
 # pylint: disable=import-error
-from models import Note, NoteType
+from api.models import Note, NoteType, Base
 
 DESCRIPTION = """
 This API manages a simple note taking application.
 
-With it, cou can create, delete and view notes.
+With it, you can create, delete and view notes.
 """
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup code
+    Base.metadata.create_all(bind=engine)
+    yield
+    # Cleanup code, if any
+
+
 app = FastAPI(
+    lifespan=lifespan,
     title="KLM Homework",
     description=DESCRIPTION,
     summary="Note taking app API",

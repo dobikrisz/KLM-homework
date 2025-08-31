@@ -5,10 +5,10 @@ Module to create type classes for API
 from typing import Optional
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql import func
+from sqlalchemy.orm import declarative_base
 from pydantic import BaseModel
 
-# pylint: disable=import-error
-from database import Base
+Base = declarative_base()
 
 
 # pylint: disable=too-few-public-methods

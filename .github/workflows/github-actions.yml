@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["pypy3.10", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.10", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
       - uses: actions/checkout@v4
@@ -26,3 +26,14 @@ jobs:
       - name: pylint check
         run: |
             pylint $(find . -name "*.py" | xargs)
+
+      - name: pytest test
+        run: |
+            CI=true
+            pytest tests/ -v --maxfail=1 --disable-warnings --cov=api --cov-report=xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: true
+          verbose: true
