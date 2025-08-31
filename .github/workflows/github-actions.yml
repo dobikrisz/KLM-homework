@@ -30,7 +30,9 @@ jobs:
       - name: pytest test
         run: |
             CI=true
-            coverage run -m pytest tests/ && coverage report -m && coverage html
+            coverage run -m pytest tests/
+            coverage report --fail-under=90
+            coverage html
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
