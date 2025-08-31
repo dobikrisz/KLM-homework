@@ -30,10 +30,10 @@ jobs:
       - name: pytest test
         run: |
             CI=true
-            pytest tests/ -v --maxfail=1 --disable-warnings --cov=api --cov-report=xml
+            coverage run -m pytest tests/ && coverage report -m && coverage html
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          files: ./coverage.xml
+          files: ./coverage.html
           fail_ci_if_error: true
           verbose: true

@@ -6,3 +6,4 @@ sqlalchemy
 streamlit
 httpx
 pytest
+coverage
