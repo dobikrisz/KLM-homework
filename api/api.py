@@ -8,10 +8,10 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 # pylint: disable=import-error
-from api.database import get_db, engine
+from database import get_db, engine
 
 # pylint: disable=import-error
-from api.models import Note, NoteType, Base
+from models import Note, NoteType, Base
 
 DESCRIPTION = """
 This API manages a simple note taking application.

@@ -5,9 +5,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
-from api.database import get_db
-from api.models import Base
-from api.api import app
+from database import get_db # pylint: disable=import-error
+from models import Base # pylint: disable=import-error
+from api.api import app # pylint: disable=import-error
 
 TEST_DATABASE_URL = "sqlite:///:memory:"
 
@@ -81,7 +81,6 @@ def test_create_note_error():
 
 
 def test_get_notes_all():
-    # Insert a note first
     client.post(
         "/notes",
         json={"title": "Note1", "content": "Hello", "creator": "Tester"},
@@ -94,28 +93,24 @@ def test_get_notes_all():
 
 
 def test_read_note():
-    # Create
     create_resp = client.post(
         "/notes",
         json={"title": "MyNote", "content": "Content", "creator": "Tester"},
     )
     note_id = create_resp.json()["id"]
 
-    # Fetch
     response = client.get(f"/notes/{note_id}")
     assert response.status_code == 200
     assert response.json()["title"] == "MyNote"
 
 
 def test_update_note():
-    # Create
     create_resp = client.post(
         "/notes",
         json={"title": "OldTitle", "content": "OldContent", "creator": "Tester"},
     )
     note_id = create_resp.json()["id"]
 
-    # Update
     response = client.put(
         f"/notes/{note_id}",
         json={"title": "NewTitle", "content": "NewContent", "creator": "Tester"},
@@ -125,14 +120,13 @@ def test_update_note():
 
 
 def test_delete_note():
-    # Create
+
     create_resp = client.post(
         "/notes",
         json={"title": "ToDelete", "content": "bye", "creator": "Tester"},
     )
     note_id = create_resp.json()["id"]
 
-    # Delete
     response = client.delete(f"/notes/{note_id}")
     assert response.status_code == 200
     assert "successfully deleted" in response.json()["message"]
