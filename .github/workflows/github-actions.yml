@@ -25,4 +25,4 @@ jobs:
 
       - name: pylint check
         run: |
-            pylint api tests
+            pylint $(find . -name "*.py" | xargs)
