@@ -20,8 +20,10 @@ With it, you can create, delete and view notes.
 """
 
 
+# pylint: disable=redefined-outer-name, unused-argument
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    """Lifespan context manager to handle startup and shutdown events"""
     # Startup code
     Base.metadata.create_all(bind=engine)
     yield

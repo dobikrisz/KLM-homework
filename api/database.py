@@ -10,6 +10,7 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 
 
 engine = create_engine(DATABASE_URL) if DATABASE_URL else None
+# pylint: disable=invalid-name
 SessionLocal = (
     sessionmaker(autocommit=False, autoflush=False, bind=engine) if engine else None
 )
@@ -23,7 +24,7 @@ def get_db():
         raise RuntimeError(
             "Database engine is not initialized. Check if DATABASE_URL is set."
         )
-    db = SessionLocal()
+    db = SessionLocal()  # pylint: disable=not-callable
     try:
         yield db
     finally:
