@@ -4,13 +4,25 @@ run-name: ${{ github.actor }} is testing API code quality 🚀
 on: [push]
 
 jobs:
-  testing:
-    runs-on: python:3.11-slim
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["pypy3.10", "3.9", "3.10", "3.11", "3.12", "3.13"]
+
     steps:
-     - uses: actions/checkout@v3
-     - name: Install dependencies
-       run: |
-         pip install -r requirements.txt
-     - name: Analysing the code with pylint
-       run: |
-         pylint api
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+      - name: Install dependencies
+        run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+
+      - name: pylint check
+        run: |
+            pylint api tests
