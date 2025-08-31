@@ -1,6 +1,8 @@
-import streamlit as st
-import requests
+"""Frontend for the Notes App using Streamlit."""
+
 import os
+import requests
+import streamlit as st
 
 API_URL = os.environ.get("API_URL")
 
@@ -22,6 +24,7 @@ with st.form("create_note"):
         response = requests.post(
             f"{API_URL}/notes",
             json={"title": title, "content": content, "creator": creator},
+            timeout=10,
         )
         if response.status_code == 200:
             st.success("Note created!")
@@ -32,7 +35,7 @@ with st.form("create_note"):
 # READ
 # -----------------------------
 st.header("All Notes")
-response = requests.get(f"{API_URL}/notes")
+response = requests.get(f"{API_URL}/notes", timeout=10)
 if response.status_code == 200:
     notes = response.json()
     for note in notes:
@@ -58,6 +61,7 @@ if response.status_code == 200:
                             "content": new_content,
                             "creator": new_creator,
                         },
+                        timeout=10,
                     )
                     if resp.status_code == 200:
                         st.success("Note updated!")
@@ -69,7 +73,7 @@ if response.status_code == 200:
             # -----------------------------
             delete_btn = st.button(f"Delete note {note['id']}")
             if delete_btn:
-                resp = requests.delete(f"{API_URL}/notes/{note['id']}")
+                resp = requests.delete(f"{API_URL}/notes/{note['id']}", timeout=10)
                 if resp.status_code == 200:
                     st.success("Note deleted!")
                     st.rerun()

@@ -6,7 +6,9 @@ from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
+# pylint: disable=import-error
 from database import get_db
+# pylint: disable=import-error
 from models import Note, NoteType
 
 DESCRIPTION = """
