@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:17.6-bookworm
+    container_name: Database
     environment:
       POSTGRES_DB: 'db'
       POSTGRES_USER: 'myuser'
@@ -11,7 +12,7 @@ services:
       timeout: 2s
       retries: 10
     ports:
-      - "5432:5432"
+      - "${DATABASE_PORT}:5432"
     volumes:
       - database_default:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -27,8 +28,9 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql://myuser:mypassword@db/db
+      PORT: ${BACKEND_PORT}
     ports:
-      - "5000:5000"
+      - "${BACKEND_PORT}:3001"
     networks:
       - backend
 
@@ -38,9 +40,10 @@ services:
     depends_on:
       - api
     environment:
-      API_URL: http://api:5000
+      API_URL: http://api:${BACKEND_PORT}
+      PORT: ${FRONTEND_PORT}
     ports:
-      - "8501:8501"
+      - "${FRONTEND_PORT}:3000"
     networks:
       - backend
 

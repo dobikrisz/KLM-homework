@@ -17,9 +17,12 @@ cd "KLM-homework"
 docker compose -f docker-compose.yml up --build
 ```
 
+> [!WARNING]
+> If any of the ports are blocked on your machine, you can simply change them in the *.env* file to an open one.
+
 To destroy the setup and create a clean slate, just simply destroy the runners with:
 ```
-docker compose -f down -v
+docker compose down -v
 ```
 
 The `-v` flag is for deleting the volumes so the data saved in the database gets removed too. If you want to keep the data, just skip using this flag.
@@ -33,19 +36,25 @@ After the deployment successfully ran, you can interact with the API service in 
 - *content* - content of the note (required)
 - *creator* - who created the note (required)
 
+> [!WARNING]
+> Since Docker Desktop operates slightly differently on different operation systems, the url's provided by the docker cli might not function as expected. This is due to the fact that on Win and Mac machines, it runs on Virtual Machines and might not be reachable on 0.0.0.0 even though it claims to be. Therefore always use **localhost** in the address to reach the desired service.
+
 #### CMD
 You can use a command line tool like *curl* to send and request data from the API:
+
+> [!IMPORTANT]
+> Don't forget to use the appropriate Port numbers if they were switched from the default!
 
 ##### Get all notes:
 ```
 curl -X 'GET' \
-  'http://127.0.0.1:5000/notes' \
+  'http://localhost:3001/notes' \
   -H 'accept: application/json'
 ```
 ##### Post a note:
 ```
 curl -X 'POST' \
-  'http://127.0.0.1:5000/notes' \
+  'http://localhost:3001/notes' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -57,13 +66,13 @@ curl -X 'POST' \
 ##### Get a single note
 ```
 curl -X 'GET' \
-  'http://127.0.0.1:5000/notes/1' \
+  'http://localhost:3001/notes/1' \
   -H 'accept: application/json'
 ```
 ##### Update a note
 ```
 curl -X 'PUT' \
-  'http://127.0.0.1:5000/notes/1' \
+  'http://localhost:3001/notes/1' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -75,20 +84,20 @@ curl -X 'PUT' \
 ##### Delete a note
 ```
 curl -X 'DELETE' \
-  'http://127.0.0.1:5000/notes/1' \
+  'http://localhost:3001/notes/1' \
   -H 'accept: application/json'
 ```
 
 #### Swagger
 You can reach the swagger API documentation and test out the API on the following link:
 ```
-http://127.0.0.1:5000/docs
+http://localhost:3001/docs
 ```
 
 #### Test Frontend
 You can test out the application via the Frontend application:
 ```
-http://127.0.0.1:8501/
+http://localhost:3000/
 ```
 
 ## CI/CD Pipeline - proposed design
